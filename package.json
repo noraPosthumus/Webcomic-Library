@@ -1,0 +1,12 @@
+{
+  "name": "webcomic-library",
+  "version": "1.0.0",
+  "description": "Interactive webcomic library",
+  "main": "index.js",
+  "scripts": {
+    "test": "-"
+  },
+  "author": "Nils Posthumus",
+  "license": "ISC",
+  "dependencies": {}
+}
