@@ -5,13 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "-",
+    "compile": "run-s compile-*",
+    "watch": "run-p watch-*",
     "watch-scss": "sass --watch scss:dist",
-    "scss-compile": "sass scss:dist"
+    "watch-ts": "nodemon --ext .ts --watch ts --exec \"npm run compile-ts\"",
+    "compile-scss": "sass scss:dist",
+    "compile-ts": "tsc"
   },
   "author": "Nils Posthumus",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "sass": "^1.35.1"
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.35.1",
+    "typescript": "^4.3.4"
   }
 }
