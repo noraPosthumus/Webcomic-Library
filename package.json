@@ -4,9 +4,14 @@
   "description": "Interactive webcomic library",
   "main": "index.js",
   "scripts": {
-    "test": "-"
+    "test": "-",
+    "watch-scss": "sass --watch scss:dist",
+    "scss-compile": "sass scss:dist"
   },
   "author": "Nils Posthumus",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "sass": "^1.35.1"
+  }
 }
