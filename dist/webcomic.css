@@ -1,3 +1,51 @@
+.webcomic-layout-default {
+  display: grid;
+  grid-template-columns: [left] auto [leftstaggering] 5vw [center] 5vw [rightstagerring] auto [right];
+  grid-template-rows: [top] auto [upperthird] auto [lowerthird] auto [bottom];
+  column-gap: 15px;
+  row-gap: 10px;
+  height: 100%;
+  width: 100%;
+}
+.webcomic-layout-default * {
+  grid-column: span 2;
+}
+.webcomic-layout-default .staggering-left:nth-child(odd) {
+  grid-column: span 1;
+}
+.webcomic-layout-default .staggering-left:nth-child(odd) + * {
+  grid-column: span 3;
+}
+.webcomic-layout-default .staggering-right:nth-child(odd) {
+  grid-column: span 3;
+}
+.webcomic-layout-default .staggering-right:nth-child(odd) + * {
+  grid-column: span 1;
+}
+.webcomic-layout-default.staggered *:nth-child(4n+1), .webcomic-layout-default.staggered *:nth-child(4n+4) {
+  grid-column: span 3;
+}
+.webcomic-layout-default.staggered *:nth-child(4n+2), .webcomic-layout-default.staggered *:nth-child(4n+3) {
+  grid-column: span 1;
+}
+.webcomic-layout-default.staggered-reversed *:nth-child(4n+1), .webcomic-layout-default.staggered-reversed *:nth-child(4n+4) {
+  grid-column: span 1;
+}
+.webcomic-layout-default.staggered-reversed *:nth-child(4n+2), .webcomic-layout-default.staggered-reversed *:nth-child(4n+3) {
+  grid-column: span 3;
+}
 
+.fullscreen {
+  width: 100vw;
+  height: 100vh;
+}
+
+.panel {
+  background-color: #000;
+}
+
+.page .caption {
+  /*captions*/
+}
 
 /*# sourceMappingURL=webcomic.css.map */

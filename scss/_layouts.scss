@@ -1,2 +1,52 @@
-.layout {
+.webcomic-layout {
+    &-default {
+        display: grid;
+        grid-template-columns:  [left] auto [leftstaggering] 5vw [center] 5vw [rightstagerring] auto [right];
+        grid-template-rows: [top] auto [upperthird] auto [lowerthird] auto [bottom];
+        column-gap: $vertical-gutter;
+        row-gap: $horizontal-gutter;
+        height: 100%;
+        width: 100%;
+
+        * {
+            grid-column: span 2;
+        }
+
+        .staggering {
+            &-left:nth-child(odd) {
+                grid-column: span 1;
+                + * {
+                    grid-column: span 3;
+                }
+            }
+            &-right:nth-child(odd) {
+                grid-column: span 3;
+                + * {
+                    grid-column: span 1;
+                }
+            }
+        }   
+
+        &.staggered {
+            *:nth-child(4n + 1), *:nth-child(4n + 4) {
+                grid-column: span 3;
+            }
+            *:nth-child(4n + 2), *:nth-child(4n + 3) {
+                grid-column: span 1;
+            }
+            &-reversed {
+                *:nth-child(4n + 1), *:nth-child(4n + 4) {
+                    grid-column: span 1;
+                }
+                *:nth-child(4n + 2), *:nth-child(4n + 3) {
+                    grid-column: span 3;
+                }
+            }
+        }
+    }
+}
+
+.fullscreen {
+    width: 100vw;
+    height: 100vh;
 }
