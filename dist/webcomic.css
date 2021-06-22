@@ -1,38 +1,72 @@
-.webcomic-layout-default {
+.webcomic-layout-grid {
+  --cols: 3;
+  --rows: 3;
   display: grid;
-  grid-template-columns: [left] auto [leftstaggering] 5vw [center] 5vw [rightstagerring] auto [right];
-  grid-template-rows: [top] auto [upperthird] auto [lowerthird] auto [bottom];
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
   column-gap: 15px;
   row-gap: 10px;
-  height: 100%;
-  width: 100%;
+  margin: 0;
 }
-.webcomic-layout-default * {
-  grid-column: span 2;
+.webcomic-layout-grid *.cols-1 {
+  grid-row-start: span 1;
 }
-.webcomic-layout-default .staggering-left:nth-child(odd) {
-  grid-column: span 1;
+.webcomic-layout-grid *.rows-1 {
+  grid-column-start: span 1;
 }
-.webcomic-layout-default .staggering-left:nth-child(odd) + * {
-  grid-column: span 3;
+.webcomic-layout-grid.cols-1 {
+  --cols: 1;
 }
-.webcomic-layout-default .staggering-right:nth-child(odd) {
-  grid-column: span 3;
+.webcomic-layout-grid.rows-1 {
+  --rows: 1;
 }
-.webcomic-layout-default .staggering-right:nth-child(odd) + * {
-  grid-column: span 1;
+.webcomic-layout-grid *.cols-2 {
+  grid-row-start: span 2;
 }
-.webcomic-layout-default.staggered *:nth-child(4n+1), .webcomic-layout-default.staggered *:nth-child(4n+4) {
-  grid-column: span 3;
+.webcomic-layout-grid *.rows-2 {
+  grid-column-start: span 2;
 }
-.webcomic-layout-default.staggered *:nth-child(4n+2), .webcomic-layout-default.staggered *:nth-child(4n+3) {
-  grid-column: span 1;
+.webcomic-layout-grid.cols-2 {
+  --cols: 2;
 }
-.webcomic-layout-default.staggered-reversed *:nth-child(4n+1), .webcomic-layout-default.staggered-reversed *:nth-child(4n+4) {
-  grid-column: span 1;
+.webcomic-layout-grid.rows-2 {
+  --rows: 2;
 }
-.webcomic-layout-default.staggered-reversed *:nth-child(4n+2), .webcomic-layout-default.staggered-reversed *:nth-child(4n+3) {
-  grid-column: span 3;
+.webcomic-layout-grid *.cols-3 {
+  grid-row-start: span 3;
+}
+.webcomic-layout-grid *.rows-3 {
+  grid-column-start: span 3;
+}
+.webcomic-layout-grid.cols-3 {
+  --cols: 3;
+}
+.webcomic-layout-grid.rows-3 {
+  --rows: 3;
+}
+.webcomic-layout-grid *.cols-4 {
+  grid-row-start: span 4;
+}
+.webcomic-layout-grid *.rows-4 {
+  grid-column-start: span 4;
+}
+.webcomic-layout-grid.cols-4 {
+  --cols: 4;
+}
+.webcomic-layout-grid.rows-4 {
+  --rows: 4;
+}
+.webcomic-layout-grid *.cols-5 {
+  grid-row-start: span 5;
+}
+.webcomic-layout-grid *.rows-5 {
+  grid-column-start: span 5;
+}
+.webcomic-layout-grid.cols-5 {
+  --cols: 5;
+}
+.webcomic-layout-grid.rows-5 {
+  --rows: 5;
 }
 
 .fullscreen {
@@ -41,11 +75,8 @@
 }
 
 .panel {
-  background-color: #000;
-}
-
-.page .caption {
-  /*captions*/
+  background-color: #c2c2c2;
+  border: solid #000 2px;
 }
 
 /*# sourceMappingURL=webcomic.css.map */

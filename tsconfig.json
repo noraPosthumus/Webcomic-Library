@@ -1,6 +1,8 @@
 {
     "include": ["ts/*"],
     "compilerOptions": {
-        "outDir": "dist"
+        "outDir": "dist",
+        "lib": ["ES5", "DOM"],
+        "module": "CommonJS"
       }
 }
