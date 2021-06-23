@@ -2,8 +2,8 @@
   --cols: 3;
   --rows: 3;
   display: grid;
-  grid-template-columns: repeat(var(--cols), 1fr);
-  grid-template-rows: repeat(var(--rows), 1fr);
+  grid-template-columns: repeat(var(--cols), 30vw);
+  grid-template-rows: repeat(var(--rows), 30vh);
   column-gap: 15px;
   row-gap: 10px;
   margin: 0;
@@ -68,6 +68,19 @@
 .webcomic-layout-grid.rows-5 {
   --rows: 5;
 }
+.webcomic-layout-flex {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-content: flex-start;
+  margin: 0;
+}
+.webcomic-layout-flex * {
+  width: 30vw;
+  height: 30vh;
+  flex-grow: 1;
+  margin: 5px 7.5px;
+}
 
 .fullscreen {
   width: 100vw;
@@ -76,6 +89,12 @@
 
 .panel {
   background-color: #c2c2c2;
+  box-sizing: border-box;
+  border: solid #000 2px;
+}
+.panel-style-caption {
+  background-color: #f1cd2c;
+  box-sizing: border-box;
   border: solid #000 2px;
 }
 

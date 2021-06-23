@@ -1,4 +1,13 @@
 .panel {
     background-color: $gray;
+    box-sizing: border-box;
     border: solid $black $border;
+
+    &-style {
+        &-caption {
+            background-color: $yellow;
+            box-sizing: border-box;
+            border: solid $black $border;
+        }
+    }
 }

@@ -27,6 +27,20 @@
             }
         }
     }
+
+    &-flex {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-content: flex-start;
+        margin: 0;
+        * {
+            width: $panel-width;
+            height: $panel-height;
+            flex-grow: 1;
+            margin: ($horizontal-gutter / 2) ($vertical-gutter / 2);
+        }
+    }
 }
 
 .fullscreen {
