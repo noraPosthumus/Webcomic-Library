@@ -1,10 +1,11 @@
-.webcomic-layout {
+.webcomic.layout {
     &-grid {
         --cols: #{$columns};
         --rows: #{$rows};
         display: grid;
-        grid-template-columns: repeat(var(--cols), $panel-width);
-        grid-template-rows:  repeat(var(--rows), $panel-height);
+        place-items: center;
+        grid-template-columns: repeat(var(--cols), 1fr);
+        grid-template-rows:  repeat(var(--rows), 1fr);
         column-gap: $vertical-gutter;
         row-gap: $horizontal-gutter;
         margin: 0;
@@ -34,9 +35,8 @@
         justify-content: space-evenly;
         align-content: flex-start;
         margin: 0;
+
         * {
-            width: $panel-width;
-            height: $panel-height;
             flex-grow: 1;
             margin: ($horizontal-gutter / 2) ($vertical-gutter / 2);
         }

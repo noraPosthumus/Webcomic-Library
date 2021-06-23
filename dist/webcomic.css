@@ -1,83 +1,82 @@
-.webcomic-layout-grid {
+.webcomic.layout-grid {
   --cols: 3;
   --rows: 3;
   display: grid;
-  grid-template-columns: repeat(var(--cols), 30vw);
-  grid-template-rows: repeat(var(--rows), 30vh);
+  place-items: center;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--rows), 1fr);
   column-gap: 15px;
   row-gap: 10px;
   margin: 0;
 }
-.webcomic-layout-grid *.cols-1 {
+.webcomic.layout-grid *.cols-1 {
   grid-row-start: span 1;
 }
-.webcomic-layout-grid *.rows-1 {
+.webcomic.layout-grid *.rows-1 {
   grid-column-start: span 1;
 }
-.webcomic-layout-grid.cols-1 {
+.webcomic.layout-grid.cols-1 {
   --cols: 1;
 }
-.webcomic-layout-grid.rows-1 {
+.webcomic.layout-grid.rows-1 {
   --rows: 1;
 }
-.webcomic-layout-grid *.cols-2 {
+.webcomic.layout-grid *.cols-2 {
   grid-row-start: span 2;
 }
-.webcomic-layout-grid *.rows-2 {
+.webcomic.layout-grid *.rows-2 {
   grid-column-start: span 2;
 }
-.webcomic-layout-grid.cols-2 {
+.webcomic.layout-grid.cols-2 {
   --cols: 2;
 }
-.webcomic-layout-grid.rows-2 {
+.webcomic.layout-grid.rows-2 {
   --rows: 2;
 }
-.webcomic-layout-grid *.cols-3 {
+.webcomic.layout-grid *.cols-3 {
   grid-row-start: span 3;
 }
-.webcomic-layout-grid *.rows-3 {
+.webcomic.layout-grid *.rows-3 {
   grid-column-start: span 3;
 }
-.webcomic-layout-grid.cols-3 {
+.webcomic.layout-grid.cols-3 {
   --cols: 3;
 }
-.webcomic-layout-grid.rows-3 {
+.webcomic.layout-grid.rows-3 {
   --rows: 3;
 }
-.webcomic-layout-grid *.cols-4 {
+.webcomic.layout-grid *.cols-4 {
   grid-row-start: span 4;
 }
-.webcomic-layout-grid *.rows-4 {
+.webcomic.layout-grid *.rows-4 {
   grid-column-start: span 4;
 }
-.webcomic-layout-grid.cols-4 {
+.webcomic.layout-grid.cols-4 {
   --cols: 4;
 }
-.webcomic-layout-grid.rows-4 {
+.webcomic.layout-grid.rows-4 {
   --rows: 4;
 }
-.webcomic-layout-grid *.cols-5 {
+.webcomic.layout-grid *.cols-5 {
   grid-row-start: span 5;
 }
-.webcomic-layout-grid *.rows-5 {
+.webcomic.layout-grid *.rows-5 {
   grid-column-start: span 5;
 }
-.webcomic-layout-grid.cols-5 {
+.webcomic.layout-grid.cols-5 {
   --cols: 5;
 }
-.webcomic-layout-grid.rows-5 {
+.webcomic.layout-grid.rows-5 {
   --rows: 5;
 }
-.webcomic-layout-flex {
+.webcomic.layout-flex {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-content: flex-start;
   margin: 0;
 }
-.webcomic-layout-flex * {
-  width: 30vw;
-  height: 30vh;
+.webcomic.layout-flex * {
   flex-grow: 1;
   margin: 5px 7.5px;
 }
@@ -88,14 +87,49 @@
 }
 
 .panel {
-  background-color: #c2c2c2;
+  width: 445px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+.panel * {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+.panel img {
+  max-width: fit-content;
+  max-height: fit-content;
+  width: fit-content;
+  height: fit-content;
+}
+.panel.border-solid, .panel .border-solid {
   box-sizing: border-box;
   border: solid #000 2px;
 }
-.panel-style-caption {
+.panel.style-caption {
   background-color: #f1cd2c;
-  box-sizing: border-box;
-  border: solid #000 2px;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes slide-left {
+  0% {
+    margin-left: -445px;
+    opacity: 0;
+  }
+  100% {
+    margin-left: 0;
+    opacity: 1;
+  }
 }
 
 /*# sourceMappingURL=webcomic.css.map */
