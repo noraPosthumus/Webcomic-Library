@@ -2,7 +2,8 @@
     "include": ["ts/*"],
     "compilerOptions": {
         "outDir": "dist",
-        "lib": ["ES5", "DOM"],
-        "module": "CommonJS"
+        "lib": ["ES2015", "DOM"],
+        "module": "CommonJS",
+        "downlevelIteration": true
       }
 }
