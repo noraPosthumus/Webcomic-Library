@@ -1,7 +1,6 @@
 namespace webcomic {
 
     export let onNextPage : () => void;
-    export let onNextPanel : (previousPanel: HTMLElement, nextPanel: HTMLElement) => void;
 
     interface Animation {class : string, name : string, duration : number, mode: FillMode, easing : string, preparation: (e: HTMLElement) => void};
     const animations : Animation[] = [
@@ -18,31 +17,39 @@ namespace webcomic {
         {class: "intro-swipe-bottom", name: "swipe-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(100% 0 0 0)"}},
         {class: "intro-grow", name: "grow", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scale(0)"}
     ];
+    interface Sequence extends Array<{target: HTMLElement, animation: Animation}> {};
 
     class AnimationManager {
-        panels: HTMLElement[] = new Array();
-        anims: Animation[] = new Array();
+        sequence: Sequence[] = new Array();
         index: number = 0;
         lastIndex: number = 0;
 
         restart () {
             this.index = 0;
-            this.lastIndex = this.panels.length;
-            this.panels.forEach((panel, i) => {this.anims[i].preparation(panel); panel.style.animation = ""});
+            this.lastIndex = this.sequence.length;
+            this.sequence.forEach((s, i) => {
+                s.forEach(s => {
+                    s.animation.preparation(s.target);
+                    s.target.style.animation = ""
+                })
+            });
         }
 
         nextPanel () {
             if (this.index == this.lastIndex) {
-                if (onNextPage)
+                if (onNextPage) {
                     onNextPage();
-                else
+                }
+                else {
                     this.restart();
+                }
                 return;
             }
-            if (!this.panels[this.index] && !this.anims[this.index]) return;
-            if (onNextPanel)
-                this.index > 0 ? onNextPanel(this.panels[this.index - 1], this.panels[this.index]) : onNextPanel(this.panels[this.index], this.panels[this.index]);
-            playAnim(this.panels[this.index], this.anims[this.index])
+            let currenntSequence: Sequence = this.sequence[this.index]
+            currenntSequence.forEach( s => {
+                if (!s.animation) return;
+                playAnim(s.target, s.animation);
+            });
             this.index++;
         }
     }
@@ -62,21 +69,24 @@ namespace webcomic {
                     return element.className.includes("panel");
             });
 
+            let i = 0;
             Array.prototype.forEach.call(panels, (element) => {
                 animations.forEach((animation) => {
                     if( element.className.includes(animation.class)) {
-                        animManager.panels.push(element);
-                        animManager.anims.push(animation);
-                    };
-                } )
+                        if (animManager.sequence[i]) {
+                            animManager.sequence[i].push({target: element, animation: animation})
+                        } else {
+                            animManager.sequence[i] = [{target: element, animation: animation}];
+                        }
+                    }
+                });
+                i++;
             });
             animManager.restart();
-
+            console.log(animManager.sequence);
             document.body.addEventListener("click", () => {
                 animManager.nextPanel();
             })
-
-            console.log(panels);
         }))
 
 
