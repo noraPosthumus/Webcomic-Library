@@ -1,19 +1,11 @@
 var webcomic;
 (function (webcomic) {
     ;
-    var animations = [
-        { "class": "intro-fade", name: "fadeIn", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { return e.style.opacity = '0'; } },
-        { "class": "intro-curtain-horizontal", name: "curtain-horizontal", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { return e.style.transform = "scaleY(0)"; } },
-        { "class": "intro-curtain-vertical", name: "curtain-vertical", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { return e.style.transform = "scaleY(0)"; } },
-        { "class": "intro-slide-left", name: "slide-left", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(0 0 0 100%)"; } },
-        { "class": "intro-slide-right", name: "slide-right", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(0 100% 0 0)"; } },
-        { "class": "intro-slide-top", name: "slide-top", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(100% 0 0 0)"; } },
-        { "class": "intro-slide-bottom", name: "slide-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(0 0 100% 0)"; } },
-        { "class": "intro-swipe-left", name: "swipe-left", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(0 100% 0 0)"; } },
-        { "class": "intro-swipe-right", name: "swipe-right", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(0 0 0 100%)"; } },
-        { "class": "intro-swipe-top", name: "swipe-top", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(0 0 100% 0)"; } },
-        { "class": "intro-swipe-bottom", name: "swipe-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { e.style.clipPath = "inset(100% 0 0 0)"; } },
-        { "class": "intro-grow", name: "grow", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: function (e) { return e.style.transform = "scale(0)"; } }
+    var intros = [
+        { name: "intro-fade", animClass: "playFadeIn", preparation: function (e) { return e.style.opacity = '0'; } }
+    ];
+    var outros = [
+        { name: "outro-fade", animClass: "playFadeOut", preparation: function () { } }
     ];
     ;
     var AnimationManager = /** @class */ (function () {
@@ -23,12 +15,13 @@ var webcomic;
             this.lastIndex = 0;
         }
         AnimationManager.prototype.restart = function () {
+            console.log("tets");
             this.index = 0;
             this.lastIndex = this.sequence.length;
             this.sequence.forEach(function (s, i) {
-                s.forEach(function (s) {
-                    s.animation.preparation(s.target);
-                    s.target.style.animation = "";
+                s.forEach(function (cs) {
+                    cs.animation.preparation(cs.target);
+                    cs.target.className = cs.target.className.replace(/(play.*?)( |$)/gi, "");
                 });
             });
         };
@@ -44,7 +37,7 @@ var webcomic;
             }
             var currenntSequence = this.sequence[this.index];
             currenntSequence.forEach(function (s) {
-                if (!s.animation)
+                if (!s)
                     return;
                 playAnim(s.target, s.animation);
             });
@@ -61,19 +54,27 @@ var webcomic;
             panels = Array.prototype.filter.call(panels, function (element) {
                 return element.className.includes("panel");
             });
-            var i = 0;
+            var isNew = true;
             Array.prototype.forEach.call(panels, function (element) {
-                animations.forEach(function (animation) {
-                    if (element.className.includes(animation["class"])) {
-                        if (animManager.sequence[i]) {
-                            animManager.sequence[i].push({ target: element, animation: animation });
-                        }
-                        else {
-                            animManager.sequence[i] = [{ target: element, animation: animation }];
-                        }
+                intros.forEach(function (animation, i) {
+                    if (element.className.includes(animation.name)) {
+                        if (i == 0 && isNew)
+                            animManager.sequence.push([{ target: element, animation: animation }]);
+                        else
+                            animManager.sequence[animManager.sequence.length - 1].push({ target: element, animation: animation });
                     }
                 });
-                i++;
+                isNew = true;
+                outros.forEach(function (animation, i) {
+                    if (element.className.includes(animation.name)) {
+                        if (i == 0) {
+                            animManager.sequence.push([{ target: element, animation: animation }]);
+                            isNew = false;
+                        }
+                        else
+                            animManager.sequence[animManager.sequence.length - 1].push({ target: element, animation: animation });
+                    }
+                });
             });
             animManager.restart();
             console.log(animManager.sequence);
@@ -84,7 +85,8 @@ var webcomic;
     }
     webcomic.initialize = initialize;
     function playAnim(target, animation) {
-        target.style.animation = animation.duration + "s " + animation.easing + " " + animation.mode + " " + animation.name;
+        target.classList.add("" + animation.animClass);
+        void target.offsetWidth;
     }
     window.onload = initialize;
 })(webcomic || (webcomic = {}));

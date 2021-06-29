@@ -112,6 +112,22 @@
     opacity: 1;
   }
 }
+.playFadeIn {
+  animation: fadeIn 0.5s ease-in-out 1 normal forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+.playFadeOut {
+  animation: fadeOut 0.5s ease-in-out 1 normal forwards;
+}
+
 @keyframes curtain-horizontal {
   0% {
     transform: scaleY(0);
