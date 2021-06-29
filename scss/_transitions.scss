@@ -1,116 +1,221 @@
-@keyframes fadeIn {
-    0% { 
-        opacity: 0; 
-    }
-    100% {
-        opacity: 1; 
-    }
-}
+.play {
 
-@keyframes curtain-horizontal {
-    0% {
-        transform: scaleY(0);
+    
+    // fade animations
+    &FadeIn {
+        animation: fade 0.5s ease-in-out 1 normal forwards;
     }
-    100% {
-        transform: scaleY(1);
-    }
-}
 
-@keyframes curtain-vertical {
-    0% {
-        transform: scaleX(0);
+    &FadeOut {
+        animation: fade 0.5s ease-in-out 1 reverse forwards;
     }
-    100% {
-        transform: scaleX(1);
-    }
-}
 
+    @keyframes fade {
+        0% { 
+            opacity: 0; 
+        }
+        100% {
+            opacity: 1; 
+        }
+    }
 
-@keyframes swipe-left {
-    0% {
-        clip-path: inset(0 100% 0 0);
+    // curtain animations
+    &CurtainInY {
+        animation: curtain-horizontal 0.5s ease-in-out 1 alternate forwards;
     }
-    100% {
-        clip-path: inset(0);
-    }
-}
 
-@keyframes swipe-right {
-    0% {
-        clip-path: inset(0 0 0 100%);
+    &CurtainInX {
+        animation: curtain-vertical 0.5s ease-in-out 1 alternate forwards;
     }
-    100% {
-        clip-path: inset(0);
-    }
-}
 
-@keyframes swipe-top {
-    0% {
-        clip-path: inset(0 0 100% 0);
+    &CurtainOutY {
+        animation: curtain-horizontal 0.5s ease-in-out 1 reverse forwards;
     }
-    100% {
-        clip-path: inset(0);
-    }
-}
 
-@keyframes swipe-bottom {
-    0% {
-        clip-path: inset(100% 0 0 0);
+    &CurtainOutX {
+        animation: curtain-vertical 0.5s ease-in-out 1 reverse forwards;
     }
-    100% {
-        clip-path: inset(0);
+    
+    @keyframes curtain-horizontal {
+        0% {
+            transform: scaleY(0);
+        }
+        100% {
+            transform: scaleY(1);
+        }
     }
-}
 
-@keyframes slide-left {
-    0% {
-        transform: translateX(-100%);
-        clip-path: inset(0 0 0 100%);
+    @keyframes curtain-vertical {
+        0% {
+            transform: scaleX(0);
+        }
+        100% {
+            transform: scaleX(1);
+        }
     }
-    100% {
-        transform: translateX(0);
-        clip-path: inset(0);
-    }
-}
 
-@keyframes slide-right {
-    0% {
-        transform: translateX(100%);
-        clip-path: inset(0 100% 0 0);
+    // swipe animations
+    &SwipeInLeft {
+        animation: swipe-left 0.5s ease-in-out 1 normal forwards;
     }
-    100% {
-        transform: translateX(0);
-        clip-path: inset(0);
-    }
-}
 
-@keyframes slide-top {
-    0% {
-        transform: translateY(-100%);
-        clip-path: inset(100% 0 0 0);
+    &SwipeInRight {
+        animation: swipe-right 0.5s ease-in-out 1 normal forwards;
     }
-    100% {
-        transform: translateY(0);
-        clip-path: inset(0);
-    }
-}
 
-@keyframes slide-bottom {
-    0% {
-        transform: translateY(100%);
-        clip-path: inset(0 0 100% 0);
+    &SwipeInTop {
+        animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
     }
-    100% {
-        transform: translateY(0);
-        clip-path: inset(0);
-    }
-}
 
-@keyframes grow {
-    0% {
-        transform: scale(0);
+    &SwipeInBottom {
+        animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
     }
-    100% {
-        transform: scale(1);
+
+    &SwipeOutLeft {
+        animation: swipe-left 0.5s ease-in-out 1 normal forwards;
     }
+
+    &SwipeOutRight {
+        animation: swipe-right 0.5s ease-in-out 1 normal forwards;
+    }
+
+    &SwipeOutTop {
+        animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    &SwipeOutBottom {
+        animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    @keyframes swipe-left {
+        0% {
+            clip-path: inset(0 100% 0 0);
+        }
+        100% {
+            clip-path: inset(0);
+        }
+    }
+    
+    @keyframes swipe-right {
+        0% {
+            clip-path: inset(0 0 0 100%);
+        }
+        100% {
+            clip-path: inset(0);
+        }
+    }
+    
+    @keyframes swipe-top {
+        0% {
+            clip-path: inset(0 0 100% 0);
+        }
+        100% {
+            clip-path: inset(0);
+        }
+    }
+    
+    @keyframes swipe-bottom {
+        0% {
+            clip-path: inset(100% 0 0 0);
+        }
+        100% {
+            clip-path: inset(0);
+        }
+    }
+
+    // slide Animations
+    &SlideInLeft {
+        animation: slide-left 0.5s ease-in-out 1 normal forwards;
+    }
+
+    &SlideInRight {
+        animation: slide-right 0.5s ease-in-out 1 normal forwards;
+    }
+
+    &SlideInTop {
+        animation: slide-top 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    &SlideInBottom {
+        animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    &SlideOutLeft {
+        animation: slide-left 0.5s ease-in-out 1 normal forwards;
+    }
+
+    &SlideOutRight {
+        animation: slide-right 0.5s ease-in-out 1 normal forwards;
+    }
+
+    &SlideOutTop {
+        animation: slide-top 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    &SlideOutBottom {
+        animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    @keyframes slide-left {
+        0% {
+            transform: translateX(-100%);
+            clip-path: inset(0 0 0 100%);
+        }
+        100% {
+            transform: translateX(0);
+            clip-path: inset(0);
+        }
+    }
+    
+    @keyframes slide-right {
+        0% {
+            transform: translateX(100%);
+            clip-path: inset(0 100% 0 0);
+        }
+        100% {
+            transform: translateX(0);
+            clip-path: inset(0);
+        }
+    }
+    
+    @keyframes slide-top {
+        0% {
+            transform: translateY(-100%);
+            clip-path: inset(100% 0 0 0);
+        }
+        100% {
+            transform: translateY(0);
+            clip-path: inset(0);
+        }
+    }
+    
+    @keyframes slide-bottom {
+        0% {
+            transform: translateY(100%);
+            clip-path: inset(0 0 100% 0);
+        }
+        100% {
+            transform: translateY(0);
+            clip-path: inset(0);
+        }
+    }
+
+    // grow animations
+    &Grow {
+        animation: grow 0.5s ease-in-out 1 normal forwards;
+    }
+
+    &Shrink {
+        animation: grow 0.5s ease-in-out 1 reverse forwards;
+    }
+
+    @keyframes grow {
+        0% {
+            transform: scale(0);
+        }
+        100% {
+            transform: scale(1);
+        }
+    }
+
 }

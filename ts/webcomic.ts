@@ -2,35 +2,52 @@ namespace webcomic {
 
     export let onNextPage : () => void;
 
-    interface Animation {class : string, name : string, duration : number, mode: FillMode, easing : string, preparation: (e: HTMLElement) => void};
-    const animations : Animation[] = [
-        {class: "intro-fade", name: "fadeIn", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.opacity = '0'},
-        {class: "intro-curtain-horizontal", name: "curtain-horizontal", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scaleY(0)"},
-        {class: "intro-curtain-vertical", name: "curtain-vertical", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scaleY(0)"},
-        {class: "intro-slide-left", name: "slide-left", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 0 100%)"}},
-        {class: "intro-slide-right", name: "slide-right", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 100% 0 0)"}},
-        {class: "intro-slide-top", name: "slide-top", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(100% 0 0 0)"}},
-        {class: "intro-slide-bottom", name: "slide-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 100% 0)"}},
-        {class: "intro-swipe-left", name: "swipe-left", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 100% 0 0)"}},
-        {class: "intro-swipe-right", name: "swipe-right", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 0 100%)"}},
-        {class: "intro-swipe-top", name: "swipe-top", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 100% 0)"}},
-        {class: "intro-swipe-bottom", name: "swipe-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(100% 0 0 0)"}},
-        {class: "intro-grow", name: "grow", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scale(0)"}
-    ];
+    interface Animation {name : string, animClass : string, preparation: (e: HTMLElement) => void};
+    const intros: Animation[] = [
+        {name: "intro-fade", animClass: "playFadeIn", preparation: (e) => e.style.opacity = '0'},
+        {name: "intro-curtain-horizontal", animClass: "playCurtainInY", preparation: (e) => e.style.transform = "scaleY(0)"},
+        {name: "intro-curtain-vertical", animClass: "playCurtainInX", preparation: (e) => e.style.transform = "scaleX(0)"},
+        {name: "intro-swipe-left", animClass: "playSwipeInLeft", preparation: (e) => e.style.clipPath = "inset(0 100% 0 0)"},
+        {name: "intro-swipe-right", animClass: "playSwipeInRight", preparation: (e) => e.style.clipPath = "inset(0 0 0 100%)"},
+        {name: "intro-swipe-top", animClass: "playSwipeInTop", preparation: (e) => e.style.clipPath = "inset(0 0 100% 0)"},
+        {name: "intro-swipe-bottom", animClass: "playSwipeInBottom", preparation: (e) => e.style.clipPath = "inset(100% 0 0 0)"},
+        {name: "intro-slide-left", animClass: "playSlideInLeft", preparation: (e) => {e.style.clipPath = "inset(0 100% 0 0)"}},
+        {name: "intro-slide-right", animClass: "playSlideInRight", preparation: (e) => {e.style.clipPath = "inset(0 0 0 100%)"}},
+        {name: "intro-slide-top", animClass: "playSlideInTop", preparation: (e) => {e.style.clipPath = "inset(100% 0 0 0)"}},
+        {name: "intro-slide-bottom", animClass: "playSlideInBottom", preparation: (e) => {e.style.clipPath = "inset(0 0 100% 0)"}},
+        {name: "intro-grow", animClass: "playGrow", preparation: (e) => {e.style.transform = "scale(0)"}}
+
+    ]
+    const outros: Animation[] = [
+        {name: "outro-fade", animClass: "playFadeOut", preparation: () => {}},
+        {name: "outro-curtain-horizontal", animClass: "playCurtainOutY", preparation: () => {}},
+        {name: "outro-curtain-vertical", animClass: "playCurtainOutX", preparation: () => {}},
+        {name: "outro-swipe-left", animClass: "playSwipeOutLeft", preparation: () => {}},
+        {name: "outro-swipe-right", animClass: "playSwipeOutRight", preparation: () => {}},
+        {name: "outro-swipe-top", animClass: "playSwipeOutTop", preparation: () => {}},
+        {name: "outro-swipe-bottom", animClass: "playSwipeOutBottom", preparation: () => {}},
+        {name: "outro-slide-left", animClass: "playSlideOutLeft", preparation: () => {}},
+        {name: "outro-slide-right", animClass: "playSlideOutRight", preparation: () => {}},
+        {name: "outro-slide-top", animClass: "playSlideOutTop", preparation: () => {}},
+        {name: "outro-slide-bottom", animClass: "playSlideOutBottom", preparation: () => {}},
+        {name: "outro-shrink", animClass: "playShrink", preparation: () => {}}
+    ]
+
     interface Sequence extends Array<{target: HTMLElement, animation: Animation}> {};
 
     class AnimationManager {
-        sequence: Sequence[] = new Array();
+        sequence: Sequence[] = new Array(); 
         index: number = 0;
         lastIndex: number = 0;
 
         restart () {
+            console.log("tets")
             this.index = 0;
             this.lastIndex = this.sequence.length;
             this.sequence.forEach((s, i) => {
-                s.forEach(s => {
-                    s.animation.preparation(s.target);
-                    s.target.style.animation = ""
+                s.forEach(cs => {
+                    cs.animation.preparation(cs.target);
+                    cs.target.className = cs.target.className.replace(/(play.*?)( |$)/gi, "");
                 })
             });
         }
@@ -46,8 +63,8 @@ namespace webcomic {
                 return;
             }
             let currenntSequence: Sequence = this.sequence[this.index]
-            currenntSequence.forEach( s => {
-                if (!s.animation) return;
+            currenntSequence.forEach( (s) => {
+                if (!s) return;
                 playAnim(s.target, s.animation);
             });
             this.index++;
@@ -69,18 +86,31 @@ namespace webcomic {
                     return element.className.includes("panel");
             });
 
-            let i = 0;
+            let isNew = true;
             Array.prototype.forEach.call(panels, (element) => {
-                animations.forEach((animation) => {
-                    if( element.className.includes(animation.class)) {
-                        if (animManager.sequence[i]) {
-                            animManager.sequence[i].push({target: element, animation: animation})
-                        } else {
-                            animManager.sequence[i] = [{target: element, animation: animation}];
-                        }
+                let i = 0;
+                intros.forEach((animation) => {
+                    if( element.className.includes(animation.name)) {
+                        if (i == 0 && isNew)
+                            animManager.sequence.push([{target: element, animation: animation}])
+                        else                        
+                            animManager.sequence[animManager.sequence.length - 1].push({target: element, animation: animation});
+                    i++;
                     }
                 });
-                i++;
+                i = 0;
+                isNew = true;
+                outros.forEach((animation) => {
+                    if( element.className.includes(animation.name)) {
+                        if (i == 0) {
+                            animManager.sequence.push([{target: element, animation: animation}]);
+                            isNew = false;
+                        }
+                        else                        
+                            animManager.sequence[animManager.sequence.length - 1].push({target: element, animation: animation});
+                    i++
+                   }
+                });
             });
             animManager.restart();
             console.log(animManager.sequence);
@@ -88,12 +118,13 @@ namespace webcomic {
                 animManager.nextPanel();
             })
         }))
-
-
     }
 
-    function playAnim(target:HTMLElement, animation:Animation) {
-        target.style.animation = `${animation.duration}s ${animation.easing} ${animation.mode} ${animation.name}`;
+    function playAnim(target:HTMLElement, animation) {
+        target.className = target.className.replace(/(play.*?)( |$)/gi, "");
+        void target.offsetWidth;
+        target.classList.add(`${animation.animClass}`);
+        void target.offsetWidth;
     }
 
     window.onload = initialize;
