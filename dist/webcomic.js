@@ -1,120 +1,197 @@
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 var webcomic;
 (function (webcomic) {
+    // options
+    var PlayOutroOptions;
+    (function (PlayOutroOptions) {
+        PlayOutroOptions[PlayOutroOptions["onNextPanel"] = 0] = "onNextPanel";
+        PlayOutroOptions[PlayOutroOptions["onPageEnd"] = 1] = "onPageEnd";
+    })(PlayOutroOptions || (PlayOutroOptions = {}));
     ;
-    var intros = [
-        { name: "intro-fade", animClass: "playFadeIn", preparation: function (e) { return e.style.opacity = '0'; } },
-        { name: "intro-curtain-horizontal", animClass: "playCurtainInY", preparation: function (e) { return e.style.transform = "scaleY(0)"; } },
-        { name: "intro-curtain-vertical", animClass: "playCurtainInX", preparation: function (e) { return e.style.transform = "scaleX(0)"; } },
-        { name: "intro-swipe-left", animClass: "playSwipeInLeft", preparation: function (e) { return e.style.clipPath = "inset(0 100% 0 0)"; } },
-        { name: "intro-swipe-right", animClass: "playSwipeInRight", preparation: function (e) { return e.style.clipPath = "inset(0 0 0 100%)"; } },
-        { name: "intro-swipe-top", animClass: "playSwipeInTop", preparation: function (e) { return e.style.clipPath = "inset(0 0 100% 0)"; } },
-        { name: "intro-swipe-bottom", animClass: "playSwipeInBottom", preparation: function (e) { return e.style.clipPath = "inset(100% 0 0 0)"; } },
-        { name: "intro-slide-left", animClass: "playSlideInLeft", preparation: function (e) { e.style.clipPath = "inset(0 100% 0 0)"; } },
-        { name: "intro-slide-right", animClass: "playSlideInRight", preparation: function (e) { e.style.clipPath = "inset(0 0 0 100%)"; } },
-        { name: "intro-slide-top", animClass: "playSlideInTop", preparation: function (e) { e.style.clipPath = "inset(100% 0 0 0)"; } },
-        { name: "intro-slide-bottom", animClass: "playSlideInBottom", preparation: function (e) { e.style.clipPath = "inset(0 0 100% 0)"; } },
-        { name: "intro-grow", animClass: "playGrow", preparation: function (e) { e.style.transform = "scale(0)"; } }
-    ];
-    var outros = [
-        { name: "outro-fade", animClass: "playFadeOut", preparation: function () { } },
-        { name: "outro-curtain-horizontal", animClass: "playCurtainOutY", preparation: function () { } },
-        { name: "outro-curtain-vertical", animClass: "playCurtainOutX", preparation: function () { } },
-        { name: "outro-swipe-left", animClass: "playSwipeOutLeft", preparation: function () { } },
-        { name: "outro-swipe-right", animClass: "playSwipeOutRight", preparation: function () { } },
-        { name: "outro-swipe-top", animClass: "playSwipeOutTop", preparation: function () { } },
-        { name: "outro-swipe-bottom", animClass: "playSwipeOutBottom", preparation: function () { } },
-        { name: "outro-slide-left", animClass: "playSlideOutLeft", preparation: function () { } },
-        { name: "outro-slide-right", animClass: "playSlideOutRight", preparation: function () { } },
-        { name: "outro-slide-top", animClass: "playSlideOutTop", preparation: function () { } },
-        { name: "outro-slide-bottom", animClass: "playSlideOutBottom", preparation: function () { } },
-        { name: "outro-shrink", animClass: "playShrink", preparation: function () { } }
-    ];
-    ;
-    var AnimationManager = /** @class */ (function () {
-        function AnimationManager() {
-            this.sequence = new Array();
-            this.index = 0;
-            this.lastIndex = 0;
+    webcomic.options = {
+        keyboardEvents: true,
+        cycle: true,
+        playOutro: PlayOutroOptions.onNextPanel
+    };
+    // init function
+    var panels = new Array();
+    function init(options) {
+        if (options === void 0) { options = {}; }
+        // get the page layout container
+        var page = document.getElementsByClassName("webcomic")[0];
+        // override default options
+        var dataOptions = page.getAttribute("data-webcomic-options");
+        if (dataOptions) {
+            Object.assign(webcomic.options, options, JSON.parse(dataOptions));
         }
-        AnimationManager.prototype.restart = function () {
-            console.log("tets");
-            this.index = 0;
-            this.lastIndex = this.sequence.length;
-            this.sequence.forEach(function (s, i) {
-                s.forEach(function (cs) {
-                    cs.animation.preparation(cs.target);
-                    cs.target.className = cs.target.className.replace(/(play.*?)( |$)/gi, "");
-                });
+        var children = Array.from(page.children);
+        panels = children.filter(function (child) {
+            return child.classList.contains("panel");
+        });
+        panels.forEach(function (panel) {
+            return initPanel(panel);
+        });
+        if (webcomic.options.keyboardEvents) {
+            window.addEventListener("keydown", function (e) {
+                if (e.keyCode == 32 || e.keyCode == 13 || e.keyCode == 39) {
+                    nextPanel();
+                }
+                else if (e.keyCode == 37) {
+                    previousPanel();
+                }
             });
-        };
-        AnimationManager.prototype.nextPanel = function () {
-            if (this.index == this.lastIndex) {
-                if (webcomic.onNextPage) {
-                    webcomic.onNextPage();
-                }
-                else {
-                    this.restart();
-                }
-                return;
+        }
+        window.addEventListener("click", function (e) {
+            nextPanel();
+        });
+        // call the onInitialized event
+        emit(WebcomicEvents.initialized);
+    }
+    webcomic.init = init;
+    // events
+    var WebcomicEvents;
+    (function (WebcomicEvents) {
+        WebcomicEvents[WebcomicEvents["initialized"] = 0] = "initialized";
+        WebcomicEvents[WebcomicEvents["nextPanel"] = 1] = "nextPanel";
+        WebcomicEvents[WebcomicEvents["nextPage"] = 2] = "nextPage";
+    })(WebcomicEvents || (WebcomicEvents = {}));
+    var events = new Map([]);
+    function on(event, callbackFn) {
+        events.set(event, callbackFn);
+    }
+    webcomic.on = on;
+    function emit(event) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        var e = events.get(event);
+        if (e) {
+            try {
+                e.apply(void 0, __spreadArray([], __read(args)));
             }
-            var currenntSequence = this.sequence[this.index];
-            currenntSequence.forEach(function (s) {
-                if (!s)
-                    return;
-                playAnim(s.target, s.animation);
-            });
-            this.index++;
-        };
-        return AnimationManager;
-    }());
-    function initialize() {
-        console.log("initialized");
-        var webComicContainers = document.getElementsByClassName("webcomic");
-        Array.prototype.forEach.call(webComicContainers, (function (webComicContainer) {
-            var animManager = new AnimationManager();
-            var panels = webComicContainer.children;
-            panels = Array.prototype.filter.call(panels, function (element) {
-                return element.className.includes("panel");
-            });
-            var isNew = true;
-            Array.prototype.forEach.call(panels, function (element) {
-                var i = 0;
-                intros.forEach(function (animation) {
-                    if (element.className.includes(animation.name)) {
-                        if (i == 0 && isNew)
-                            animManager.sequence.push([{ target: element, animation: animation }]);
-                        else
-                            animManager.sequence[animManager.sequence.length - 1].push({ target: element, animation: animation });
-                        i++;
-                    }
-                });
-                i = 0;
-                isNew = true;
-                outros.forEach(function (animation) {
-                    if (element.className.includes(animation.name)) {
-                        if (i == 0) {
-                            animManager.sequence.push([{ target: element, animation: animation }]);
-                            isNew = false;
-                        }
-                        else
-                            animManager.sequence[animManager.sequence.length - 1].push({ target: element, animation: animation });
-                        i++;
-                    }
-                });
-            });
-            animManager.restart();
-            console.log(animManager.sequence);
-            document.body.addEventListener("click", function () {
-                animManager.nextPanel();
-            });
-        }));
+            catch (e) {
+                console.error(e.message);
+            }
+        }
     }
-    webcomic.initialize = initialize;
-    function playAnim(target, animation) {
-        target.className = target.className.replace(/(play.*?)( |$)/gi, "");
-        void target.offsetWidth;
-        target.classList.add("" + animation.animClass);
-        void target.offsetWidth;
+    webcomic.emit = emit;
+    // initialize a panel (prepare animations)
+    function initPanel(panel) {
+        var order = parseInt(panel.getAttribute("data-order"));
+        if (panel.hasAttribute("data-intro")) {
+            panel.classList.add(panel.getAttribute("data-intro") + "-before");
+            void panel.offsetWidth;
+            if (order) {
+                intros.splice(order, 0, panel);
+            }
+            else {
+                intros.push(panel);
+            }
+        }
+        ;
+        if (panel.hasAttribute("data-outro")) {
+            outros.push(panel);
+        }
+        ;
     }
-    window.onload = initialize;
+    // transition to the next panel
+    var intros = new Array(), outros = new Array(), cursor = 0;
+    function nextPanel() {
+        webcomic.emit(WebcomicEvents.nextPanel);
+        if (cursor >= intros.length) {
+            if (webcomic.options.cycle) {
+                reset();
+            }
+            ;
+            webcomic.emit(WebcomicEvents.nextPage);
+            return;
+        }
+        ;
+        if (webcomic.options.playOutro == PlayOutroOptions.onNextPanel && cursor > 0) {
+            animateOut(outros[cursor - 1]);
+        }
+        animateIn(intros[cursor]);
+        cursor++;
+    }
+    // transition to the previous panel
+    function previousPanel() {
+        if (cursor == 0)
+            return;
+        animateOut(outros[cursor - 1]);
+        if (cursor > 1)
+            animateIn(intros[cursor - 2]);
+        cursor--;
+    }
+    // reset all animations
+    function reset() {
+        intros = new Array();
+        outros = new Array();
+        cursor = 0;
+        panels.forEach(function (panel) {
+            initPanel(panel);
+            panel.classList.remove(panel.getAttribute("data-intro") + "-after");
+            panel.classList.remove(panel.getAttribute("data-outro") + "-after");
+        });
+    }
+    // play the animation on the target element (optional duration in milliseconds)
+    function playAnimation(animation, target, duration) {
+        if (duration === void 0) { duration = 500; }
+        target.classList.remove(animation + "-before");
+        target.classList.add(animation);
+        target.style.animationDuration = duration + "ms";
+        void target.offsetWidth;
+        setTimeout(function () {
+            target.classList.remove(animation);
+            target.classList.add(animation + "-after");
+            void target.offsetWidth;
+        }, duration);
+    }
+    // animate in
+    function animateIn(target) {
+        var intro = target.getAttribute("data-intro"), outro = target.getAttribute("data-outro");
+        if (target.hasAttribute("data-outro"))
+            target.classList.remove(target.getAttribute("data-outro") + "-after");
+        playAnimation(intro, target);
+    }
+    // animate out
+    function animateOut(target) {
+        var outro = target.getAttribute("data-outro");
+        if (target.hasAttribute("data-intro"))
+            target.classList.remove(target.getAttribute("data-intro") + "-after");
+        playAnimation(outro, target);
+    }
+    // helper function to convert css duration strings to milliseconds
+    function cssDurationToMS(val) {
+        if (val == "")
+            return 0;
+        else if (val.includes("ms"))
+            return parseFloat(val.replace("ms", ""));
+        else
+            return parseFloat(val.replace("s", "")) * 1000;
+    }
+    // run the init funtion when the page loaded
+    window.addEventListener("load", function (e) {
+        webcomic.init();
+    });
 })(webcomic || (webcomic = {}));

@@ -1,14 +1,30 @@
+    
+// fade animations
+.fade {
+    &-in {
+        animation-duration: 0.5s;
+        animation: fade 0.5s ease-in-out 1 normal forwards;
+        &-before {
+            opacity: 0;
+        }
+        &-after {
+            opacity: 1;
+        }
+    }
+    &-out {
+        animation: fade 0.5s ease-in-out 1 reverse forwards;
+        &-before {
+            opacity: 1;
+        }
+        &-after {
+            opacity: 0;
+        }
+    }
+}
+
 .play {
 
-    
-    // fade animations
-    &FadeIn {
-        animation: fade 0.5s ease-in-out 1 normal forwards;
-    }
 
-    &FadeOut {
-        animation: fade 0.5s ease-in-out 1 reverse forwards;
-    }
 
     @keyframes fade {
         0% { 
