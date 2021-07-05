@@ -8,7 +8,15 @@
     <title>Demo</title>
 </head>
 <body>
-    <div class="webcomic layout-flex">
+    <div class="webcomic layout-flex" data-webcomic-options='{"playOutro":1, "cycle": false}'>
+        <div style="background-color: aqua; width: 40%; height: 300px;" class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div style="background-color: coral; width: 50%; height: 300px;" class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div style="background-color: coral; width: 50%; height: 300px;" class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div style="background-color: aqua; width: 40%; height: 300px;" class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
         <div style="background-color: aqua; width: 40%; height: 300px;" class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
         </div>
         <div style="background-color: coral; width: 50%; height: 300px;" class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
@@ -17,9 +25,6 @@
     <script src="../dist/webcomic.js"></script>
     <script>
         webcomic.on(webcomic.WebcomicEvents.initialized, () => console.log("Webcomic Initialized"));
-        
-        // this is just for testing. You shouldn't do this on actuall applications. Let the backend handle it instead.
-        webcomic.on(webcomic.WebcomicEvents.nextPage, () => window.open(window.location.pathname + "/../demo-p2.html", "_self"));
     </script>
 </body>
 </html>

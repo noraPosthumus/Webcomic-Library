@@ -1,90 +1,201 @@
 namespace webcomic {
 
-    export let onNextPage : () => void;
-    export let onNextPanel : (previousPanel: HTMLElement, nextPanel: HTMLElement) => void;
+    // options
+    enum PlayOutroOptions {onNextPanel, onPageEnd}
+    interface Options {keyboardEvents?: boolean, cycle?: boolean, playOutro?: PlayOutroOptions};
+    export let options: Options = {
+        keyboardEvents: true,
+        cycle: true,
+        playOutro: PlayOutroOptions.onNextPanel
+    };
 
-    interface Animation {class : string, name : string, duration : number, mode: FillMode, easing : string, preparation: (e: HTMLElement) => void};
-    const animations : Animation[] = [
-        {class: "intro-fade", name: "fadeIn", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.opacity = '0'},
-        {class: "intro-curtain-horizontal", name: "curtain-horizontal", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scaleY(0)"},
-        {class: "intro-curtain-vertical", name: "curtain-vertical", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scaleY(0)"},
-        {class: "intro-slide-left", name: "slide-left", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 0 100%)"}},
-        {class: "intro-slide-right", name: "slide-right", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 100% 0 0)"}},
-        {class: "intro-slide-top", name: "slide-top", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(100% 0 0 0)"}},
-        {class: "intro-slide-bottom", name: "slide-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 100% 0)"}},
-        {class: "intro-swipe-left", name: "swipe-left", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 100% 0 0)"}},
-        {class: "intro-swipe-right", name: "swipe-right", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 0 100%)"}},
-        {class: "intro-swipe-top", name: "swipe-top", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(0 0 100% 0)"}},
-        {class: "intro-swipe-bottom", name: "swipe-bottom", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) =>  {e.style.clipPath = "inset(100% 0 0 0)"}},
-        {class: "intro-grow", name: "grow", duration: 0.5, mode: "forwards", easing: "ease-in-out", preparation: (e) => e.style.transform = "scale(0)"}
-    ];
+    // init function
+    let panels = new Array<HTMLElement>();
+    export function init (options: Options = {}) {
 
-    class AnimationManager {
-        panels: HTMLElement[] = new Array();
-        anims: Animation[] = new Array();
-        index: number = 0;
-        lastIndex: number = 0;
+        // get the page layout container
+        const page: HTMLElement = document.getElementsByClassName("webcomic")[0] as HTMLElement;
 
-        restart () {
-            this.index = 0;
-            this.lastIndex = this.panels.length;
-            this.panels.forEach((panel, i) => {this.anims[i].preparation(panel); panel.style.animation = ""});
+        if(!page) {
+            emit(WebcomicEvents.initialized);
+            return;
+        };
+        // override default options
+        const dataOptions = page.getAttribute("data-webcomic-options");
+        if(dataOptions) {
+            Object.assign(webcomic.options, options, JSON.parse(dataOptions));
         }
 
-        nextPanel () {
-            if (this.index == this.lastIndex) {
-                if (onNextPage)
-                    onNextPage();
-                else
-                    this.restart();
-                return;
-            }
-            if (!this.panels[this.index] && !this.anims[this.index]) return;
-            if (onNextPanel)
-                this.index > 0 ? onNextPanel(this.panels[this.index - 1], this.panels[this.index]) : onNextPanel(this.panels[this.index], this.panels[this.index]);
-            playAnim(this.panels[this.index], this.anims[this.index])
-            this.index++;
-        }
-    }
+        let children = Array.from(page.children) as Array<HTMLElement>;
 
-    export function initialize() {
+        panels = children.filter(child => 
+            child.classList.contains("panel"));
+        panels.forEach(panel  => 
+                initPanel(panel as HTMLElement));
 
-        console.log("initialized");
-
-        const webComicContainers : HTMLCollection = document.getElementsByClassName("webcomic");
-
-        Array.prototype.forEach.call(webComicContainers, (webComicContainer  => {
-
-            const animManager = new AnimationManager();
-
-            let panels : HTMLCollection = webComicContainer.children;
-            panels = Array.prototype.filter.call(panels, (element) => {
-                    return element.className.includes("panel");
-            });
-
-            Array.prototype.forEach.call(panels, (element) => {
-                animations.forEach((animation) => {
-                    if( element.className.includes(animation.class)) {
-                        animManager.panels.push(element);
-                        animManager.anims.push(animation);
-                    };
-                } )
-            });
-            animManager.restart();
-
-            document.body.addEventListener("click", () => {
-                animManager.nextPanel();
+        if (webcomic.options.keyboardEvents) {
+            window.addEventListener("keydown", e => {
+                if(e.keyCode == 32 || e.keyCode == 13 || e.keyCode == 39) {
+                    nextPanel();
+                } else if (e.keyCode == 37) {
+                    previousPanel();
+                }
             })
+        }
+        window.addEventListener("click" , e => {
+            nextPanel();
+        })
 
-            console.log(panels);
-        }))
-
-
+        // call the onInitialized event
+        emit(WebcomicEvents.initialized);
     }
 
-    function playAnim(target:HTMLElement, animation:Animation) {
-        target.style.animation = `${animation.duration}s ${animation.easing} ${animation.mode} ${animation.name}`;
+    // events
+    export enum WebcomicEvents {
+        initialized,
+        nextPanel,
+        nextPage
+    }
+    let events: Map<WebcomicEvents, CallableFunction[]> = new Map<WebcomicEvents, CallableFunction[]>([
+    ])
+    export function on (event: WebcomicEvents, callbackFn: CallableFunction) {
+        if(events.get(event)) {
+            events.get(event).push(callbackFn);
+        } else {
+            events.set(event, [callbackFn])
+        }
+    }
+    export function emit (event: WebcomicEvents, ...args) {
+        if (!events.get(event)) return;
+        events.get(event).forEach(e => {
+                try {
+                    e(...args);
+                } catch (e) {
+                    console.error(e.message);
+                }
+        })        
     }
 
-    window.onload = initialize;
+    // initialize a panel (prepare animations)
+    function initPanel (panel: HTMLElement) {
+        const order: number = parseInt(panel.getAttribute("data-order"));
+        if(panel.hasAttribute("data-intro")) {
+            panel.classList.add(panel.getAttribute("data-intro") + "-before");
+            void panel.offsetWidth;
+            if( order) {
+                intros.splice(order, 0, panel);
+            } else {
+                intros.push(panel);
+            }
+        };
+        if(panel.hasAttribute("data-outro")) {
+            outros.push(panel);
+        };
+    }
+
+    // transition to the next panel
+    let intros = new Array(),
+    outros = new Array(),
+    cursor = 0;
+    function nextPanel () {
+
+        webcomic.emit(WebcomicEvents.nextPanel);
+
+        if ( cursor >= intros.length) {
+            if (options.playOutro == PlayOutroOptions.onPageEnd) {
+                outros.forEach(o => {
+                    animateOut(o);
+                })
+            }
+            if (options.cycle) {
+                reset();
+            };
+            webcomic.emit(WebcomicEvents.nextPage);
+            return;
+        };
+
+        if(webcomic.options.playOutro == PlayOutroOptions.onNextPanel && cursor > 0) {
+            animateOut(outros[cursor - 1]);
+        }
+
+        animateIn(intros[cursor]);
+        cursor++;
+    }
+
+    // transition to the previous panel
+    function previousPanel () {
+        if (cursor == 0) return;
+
+        animateOut(outros[cursor - 1]);
+
+        if (cursor > 1)
+            animateIn(intros[cursor - 2]);
+
+        cursor--;
+    }
+
+    // reset all animations
+    function reset() {
+        intros= new Array();
+        outros = new Array();
+        cursor = 0;
+
+        panels.forEach(panel  => {
+            animTimeHandlers.forEach(h => {
+                setTimeout(h, 0);
+            })
+            initPanel(panel);
+            panel.classList.remove(panel.getAttribute("data-intro") + "-after");
+            panel.classList.remove(panel.getAttribute("data-outro") + "-after");
+        });
+    }
+    
+    let animTimeHandlers = new Array();
+    // play the animation on the target element (optional duration in milliseconds)
+    function playAnimation (animation: string, target: HTMLElement, duration: number = 500) {
+
+        target.classList.remove(animation + "-before");
+        target.classList.add(animation);
+
+        target.style.animationDuration = duration + "ms";
+
+        void target.offsetWidth;
+
+        animTimeHandlers.push(setTimeout(() => {
+            target.classList.remove(animation);
+            target.classList.add(animation + "-after");
+            void target.offsetWidth;
+        }, duration))
+    }
+
+    // animate in
+    function animateIn (target: HTMLElement) {
+        const intro: string = target.getAttribute("data-intro"),
+        outro: string = target.getAttribute("data-outro");
+
+        if (target.hasAttribute("data-outro"))
+            target.classList.remove(target.getAttribute("data-outro") + "-after");
+        playAnimation(intro, target);
+    }
+
+    // animate out
+    function animateOut (target: HTMLElement) {
+        const outro: string = target.getAttribute("data-outro");
+
+        if (target.hasAttribute("data-intro"))
+            target.classList.remove(target.getAttribute("data-intro") + "-after");
+        playAnimation(outro, target);
+    }
+
+    // helper function to convert css duration strings to milliseconds
+    function cssDurationToMS (val: string): number {
+        if (val == "") return 0;
+        else if (val.includes("ms")) return parseFloat(val.replace("ms", ""));
+        else return parseFloat(val.replace("s", "")) * 1000;
+    }
+
+    // run the init funtion when the page loaded
+    window.addEventListener("load", e => {
+        webcomic.init();
+    })
 }

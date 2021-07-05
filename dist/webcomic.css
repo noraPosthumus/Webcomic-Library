@@ -104,13 +104,45 @@
   background-color: #f1cd2c;
 }
 
-@keyframes fadeIn {
+.fade-in {
+  animation-duration: 0.5s;
+  animation: fade 0.5s ease-in-out 1 normal forwards;
+}
+.fade-in-before {
+  opacity: 0;
+}
+.fade-in-after {
+  opacity: 1;
+}
+.fade-out {
+  animation: fade 0.5s ease-in-out 1 reverse forwards;
+}
+.fade-out-before {
+  opacity: 1;
+}
+.fade-out-after {
+  opacity: 0;
+}
+
+@keyframes fade {
   0% {
     opacity: 0;
   }
   100% {
     opacity: 1;
   }
+}
+.playCurtainInY {
+  animation: curtain-horizontal 0.5s ease-in-out 1 alternate forwards;
+}
+.playCurtainInX {
+  animation: curtain-vertical 0.5s ease-in-out 1 alternate forwards;
+}
+.playCurtainOutY {
+  animation: curtain-horizontal 0.5s ease-in-out 1 reverse forwards;
+}
+.playCurtainOutX {
+  animation: curtain-vertical 0.5s ease-in-out 1 reverse forwards;
 }
 @keyframes curtain-horizontal {
   0% {
@@ -127,6 +159,30 @@
   100% {
     transform: scaleX(1);
   }
+}
+.playSwipeInLeft {
+  animation: swipe-left 0.5s ease-in-out 1 normal forwards;
+}
+.playSwipeInRight {
+  animation: swipe-right 0.5s ease-in-out 1 normal forwards;
+}
+.playSwipeInTop {
+  animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
+}
+.playSwipeInBottom {
+  animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
+}
+.playSwipeOutLeft {
+  animation: swipe-left 0.5s ease-in-out 1 normal forwards;
+}
+.playSwipeOutRight {
+  animation: swipe-right 0.5s ease-in-out 1 normal forwards;
+}
+.playSwipeOutTop {
+  animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
+}
+.playSwipeOutBottom {
+  animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
 }
 @keyframes swipe-left {
   0% {
@@ -159,6 +215,30 @@
   100% {
     clip-path: inset(0);
   }
+}
+.playSlideInLeft {
+  animation: slide-left 0.5s ease-in-out 1 normal forwards;
+}
+.playSlideInRight {
+  animation: slide-right 0.5s ease-in-out 1 normal forwards;
+}
+.playSlideInTop {
+  animation: slide-top 0.5s ease-in-out 1 reverse forwards;
+}
+.playSlideInBottom {
+  animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
+}
+.playSlideOutLeft {
+  animation: slide-left 0.5s ease-in-out 1 normal forwards;
+}
+.playSlideOutRight {
+  animation: slide-right 0.5s ease-in-out 1 normal forwards;
+}
+.playSlideOutTop {
+  animation: slide-top 0.5s ease-in-out 1 reverse forwards;
+}
+.playSlideOutBottom {
+  animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
 }
 @keyframes slide-left {
   0% {
@@ -199,6 +279,12 @@
     transform: translateY(0);
     clip-path: inset(0);
   }
+}
+.playGrow {
+  animation: grow 0.5s ease-in-out 1 normal forwards;
+}
+.playShrink {
+  animation: grow 0.5s ease-in-out 1 reverse forwards;
 }
 @keyframes grow {
   0% {
