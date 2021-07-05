@@ -16,6 +16,10 @@ namespace webcomic {
         // get the page layout container
         const page: HTMLElement = document.getElementsByClassName("webcomic")[0] as HTMLElement;
 
+        if(!page) {
+            emit(WebcomicEvents.initialized);
+            return;
+        };
         // override default options
         const dataOptions = page.getAttribute("data-webcomic-options");
         if(dataOptions) {
@@ -47,25 +51,29 @@ namespace webcomic {
     }
 
     // events
-    enum WebcomicEvents {
+    export enum WebcomicEvents {
         initialized,
         nextPanel,
         nextPage
     }
-    let events: Map<WebcomicEvents, CallableFunction> = new Map<WebcomicEvents, CallableFunction>([
+    let events: Map<WebcomicEvents, CallableFunction[]> = new Map<WebcomicEvents, CallableFunction[]>([
     ])
     export function on (event: WebcomicEvents, callbackFn: CallableFunction) {
-        events.set(event, callbackFn);
+        if(events.get(event)) {
+            events.get(event).push(callbackFn);
+        } else {
+            events.set(event, [callbackFn])
+        }
     }
     export function emit (event: WebcomicEvents, ...args) {
-        const e: CallableFunction | undefined = events.get(event);
-        if (e) {
-            try {
-                e(...args);
-            } catch (e) {
-                console.error(e.message);
-            }
-        }
+        if (!events.get(event)) return;
+        events.get(event).forEach(e => {
+                try {
+                    e(...args);
+                } catch (e) {
+                    console.error(e.message);
+                }
+        })        
     }
 
     // initialize a panel (prepare animations)
@@ -94,6 +102,11 @@ namespace webcomic {
         webcomic.emit(WebcomicEvents.nextPanel);
 
         if ( cursor >= intros.length) {
+            if (options.playOutro == PlayOutroOptions.onPageEnd) {
+                outros.forEach(o => {
+                    animateOut(o);
+                })
+            }
             if (options.cycle) {
                 reset();
             };
@@ -128,12 +141,16 @@ namespace webcomic {
         cursor = 0;
 
         panels.forEach(panel  => {
+            animTimeHandlers.forEach(h => {
+                setTimeout(h, 0);
+            })
             initPanel(panel);
             panel.classList.remove(panel.getAttribute("data-intro") + "-after");
             panel.classList.remove(panel.getAttribute("data-outro") + "-after");
         });
     }
     
+    let animTimeHandlers = new Array();
     // play the animation on the target element (optional duration in milliseconds)
     function playAnimation (animation: string, target: HTMLElement, duration: number = 500) {
 
@@ -144,11 +161,11 @@ namespace webcomic {
 
         void target.offsetWidth;
 
-        setTimeout(() => {
+        animTimeHandlers.push(setTimeout(() => {
             target.classList.remove(animation);
             target.classList.add(animation + "-after");
             void target.offsetWidth;
-        }, duration)
+        }, duration))
     }
 
     // animate in

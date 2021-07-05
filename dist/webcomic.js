@@ -39,6 +39,11 @@ var webcomic;
         if (options === void 0) { options = {}; }
         // get the page layout container
         var page = document.getElementsByClassName("webcomic")[0];
+        if (!page) {
+            emit(WebcomicEvents.initialized);
+            return;
+        }
+        ;
         // override default options
         var dataOptions = page.getAttribute("data-webcomic-options");
         if (dataOptions) {
@@ -74,10 +79,15 @@ var webcomic;
         WebcomicEvents[WebcomicEvents["initialized"] = 0] = "initialized";
         WebcomicEvents[WebcomicEvents["nextPanel"] = 1] = "nextPanel";
         WebcomicEvents[WebcomicEvents["nextPage"] = 2] = "nextPage";
-    })(WebcomicEvents || (WebcomicEvents = {}));
+    })(WebcomicEvents = webcomic.WebcomicEvents || (webcomic.WebcomicEvents = {}));
     var events = new Map([]);
     function on(event, callbackFn) {
-        events.set(event, callbackFn);
+        if (events.get(event)) {
+            events.get(event).push(callbackFn);
+        }
+        else {
+            events.set(event, [callbackFn]);
+        }
     }
     webcomic.on = on;
     function emit(event) {
@@ -85,15 +95,16 @@ var webcomic;
         for (var _i = 1; _i < arguments.length; _i++) {
             args[_i - 1] = arguments[_i];
         }
-        var e = events.get(event);
-        if (e) {
+        if (!events.get(event))
+            return;
+        events.get(event).forEach(function (e) {
             try {
                 e.apply(void 0, __spreadArray([], __read(args)));
             }
             catch (e) {
                 console.error(e.message);
             }
-        }
+        });
     }
     webcomic.emit = emit;
     // initialize a panel (prepare animations)
@@ -120,6 +131,11 @@ var webcomic;
     function nextPanel() {
         webcomic.emit(WebcomicEvents.nextPanel);
         if (cursor >= intros.length) {
+            if (webcomic.options.playOutro == PlayOutroOptions.onPageEnd) {
+                outros.forEach(function (o) {
+                    animateOut(o);
+                });
+            }
             if (webcomic.options.cycle) {
                 reset();
             }
@@ -149,11 +165,15 @@ var webcomic;
         outros = new Array();
         cursor = 0;
         panels.forEach(function (panel) {
+            animTimeHandlers.forEach(function (h) {
+                setTimeout(h, 0);
+            });
             initPanel(panel);
             panel.classList.remove(panel.getAttribute("data-intro") + "-after");
             panel.classList.remove(panel.getAttribute("data-outro") + "-after");
         });
     }
+    var animTimeHandlers = new Array();
     // play the animation on the target element (optional duration in milliseconds)
     function playAnimation(animation, target, duration) {
         if (duration === void 0) { duration = 500; }
@@ -161,11 +181,11 @@ var webcomic;
         target.classList.add(animation);
         target.style.animationDuration = duration + "ms";
         void target.offsetWidth;
-        setTimeout(function () {
+        animTimeHandlers.push(setTimeout(function () {
             target.classList.remove(animation);
             target.classList.add(animation + "-after");
             void target.offsetWidth;
-        }, duration);
+        }, duration));
     }
     // animate in
     function animateIn(target) {
