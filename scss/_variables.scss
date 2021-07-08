@@ -1,3 +1,11 @@
 $black: #000;
 $white: #fff;
 $yellow: #f1cd2c;
+
+.webcomic {
+    --horizontal-gutter: 10px;
+    --vertical-gutter: 15px;
+    --panel-width: fit-content;
+    --panel-height: fit-content;
+    --border: 3px;
+}
