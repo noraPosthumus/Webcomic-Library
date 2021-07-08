@@ -8,7 +8,7 @@ Clone the repository
 ```bash
 git clone https://github.com/nilsPosthumus/Webcomic-Library
 ```
-or dowload the [latest release](https://github.com/nilsPosthumus/Webcomic-Library)
+or dowload the [latest release](https://github.com/nilsPosthumus/Webcomic-Library/releases/)
 
 
 ### Using NPM
