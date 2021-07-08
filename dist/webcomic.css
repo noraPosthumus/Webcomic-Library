@@ -17,64 +17,44 @@
   row-gap: var(--horizontal-gutter);
   margin: 0;
 }
-.webcomic.layout-grid *.cols-1 {
-  grid-row-start: span 1;
-}
-.webcomic.layout-grid *.rows-1 {
-  grid-column-start: span 1;
-}
 .webcomic.layout-grid.cols-1 {
+  grid-row-start: span 1;
   --cols: 1;
 }
 .webcomic.layout-grid.rows-1 {
+  grid-column-start: span 1;
   --rows: 1;
 }
-.webcomic.layout-grid *.cols-2 {
-  grid-row-start: span 2;
-}
-.webcomic.layout-grid *.rows-2 {
-  grid-column-start: span 2;
-}
 .webcomic.layout-grid.cols-2 {
+  grid-row-start: span 2;
   --cols: 2;
 }
 .webcomic.layout-grid.rows-2 {
+  grid-column-start: span 2;
   --rows: 2;
 }
-.webcomic.layout-grid *.cols-3 {
-  grid-row-start: span 3;
-}
-.webcomic.layout-grid *.rows-3 {
-  grid-column-start: span 3;
-}
 .webcomic.layout-grid.cols-3 {
+  grid-row-start: span 3;
   --cols: 3;
 }
 .webcomic.layout-grid.rows-3 {
+  grid-column-start: span 3;
   --rows: 3;
 }
-.webcomic.layout-grid *.cols-4 {
-  grid-row-start: span 4;
-}
-.webcomic.layout-grid *.rows-4 {
-  grid-column-start: span 4;
-}
 .webcomic.layout-grid.cols-4 {
+  grid-row-start: span 4;
   --cols: 4;
 }
 .webcomic.layout-grid.rows-4 {
+  grid-column-start: span 4;
   --rows: 4;
 }
-.webcomic.layout-grid *.cols-5 {
-  grid-row-start: span 5;
-}
-.webcomic.layout-grid *.rows-5 {
-  grid-column-start: span 5;
-}
 .webcomic.layout-grid.cols-5 {
+  grid-row-start: span 5;
   --cols: 5;
 }
 .webcomic.layout-grid.rows-5 {
+  grid-column-start: span 5;
   --rows: 5;
 }
 .webcomic.layout-flex {

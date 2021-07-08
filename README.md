@@ -37,11 +37,11 @@ npm install webcomic-library
 ```
 
 ## Changing the config
-You can the change the options for the library by supplying a config json object. The easiest way to do this is via the data-webcomic-config attribute.
+You can change the options for the library by supplying a config json object. The easiest way to do this is via the data-webcomic-config attribute.
 ```html
  <div class="webcomic" data-webcomic-config="{}">
 ```
-You can change the following settings in the config:
+The following settings are changeable in the config:
 - `keyboardEvents`: whether to listen on keyboard events or not
 - `cycle`:  whether to restart the page after the last panel was shown
 - `playOutro`: 
@@ -85,7 +85,7 @@ This layout creates a grid with a fixed number of rows and columns. Use it like 
 The maximum amounts of rows and columns are 5 each.
 
 ### Flex Layout
-This layout adjusts automaticly to the number of panels their size and the screen width and height. You can use it like this:
+This layout adjusts automaticly to the number of panels, their size and the screen width and height. You can use it like this:
 ```html
 <div class="webcomic layout-flex">
     ...
@@ -116,7 +116,7 @@ You can add animations to panels by adding the `data-intro` or `data-outro` attr
 - `slide-out-bottom`
 
 ## Multiple Pages
-To make a comic with multiple pages you need to create each page as a HTML page. Then on the nextPage event you can redirect to the new page. For Example like this:
+To make a comic with multiple pages you need to create each page as a HTML page. Then on the nextPage event you can redirect to the new page. For example like this:
 ```js
 webcomic.on("nextPage", () => window.open("/next-page.html", "_self"));
 ```
