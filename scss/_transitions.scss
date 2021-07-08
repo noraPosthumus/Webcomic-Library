@@ -1,8 +1,13 @@
-    
-// fade animations
 .fade {
+    @keyframes fade {
+        0% { 
+            opacity: 0; 
+        }
+        100% {
+            opacity: 1; 
+        }
+    }
     &-in {
-        animation-duration: 0.5s;
         animation: fade 0.5s ease-in-out 1 normal forwards;
         &-before {
             opacity: 0;
@@ -13,218 +18,46 @@
     }
     &-out {
         animation: fade 0.5s ease-in-out 1 reverse forwards;
-        &-before {
-            opacity: 1;
-        }
         &-after {
             opacity: 0;
         }
     }
 }
-
-.play {
-
-
-
-    @keyframes fade {
-        0% { 
-            opacity: 0; 
+.grow {
+    &-vertical {
+        @keyframes grow-vertical {
+            0% {
+                transform: scaleX(0);
+            }
+            100% {
+                transform: scaleX(1);
+            }
         }
-        100% {
-            opacity: 1; 
-        }
-    }
-
-    // curtain animations
-    &CurtainInY {
-        animation: curtain-horizontal 0.5s ease-in-out 1 alternate forwards;
-    }
-
-    &CurtainInX {
-        animation: curtain-vertical 0.5s ease-in-out 1 alternate forwards;
-    }
-
-    &CurtainOutY {
-        animation: curtain-horizontal 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &CurtainOutX {
-        animation: curtain-vertical 0.5s ease-in-out 1 reverse forwards;
-    }
-    
-    @keyframes curtain-horizontal {
-        0% {
-            transform: scaleY(0);
-        }
-        100% {
-            transform: scaleY(1);
-        }
-    }
-
-    @keyframes curtain-vertical {
-        0% {
+        animation: grow-vertical 0.5s ease-in-out 1 normal forwards;
+        &-before {
             transform: scaleX(0);
         }
-        100% {
+        &-after {
             transform: scaleX(1);
         }
     }
-
-    // swipe animations
-    &SwipeInLeft {
-        animation: swipe-left 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SwipeInRight {
-        animation: swipe-right 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SwipeInTop {
-        animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &SwipeInBottom {
-        animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &SwipeOutLeft {
-        animation: swipe-left 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SwipeOutRight {
-        animation: swipe-right 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SwipeOutTop {
-        animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &SwipeOutBottom {
-        animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    @keyframes swipe-left {
-        0% {
-            clip-path: inset(0 100% 0 0);
+    &-horizontal {
+        @keyframes grow-horizontal {
+            0% {
+                transform: scaleY(0);
+            }
+            100% {
+                transform: scaleY(1);
+            }
         }
-        100% {
-            clip-path: inset(0);
+        animation: grow-horizontal 0.5s ease-in-out 1 normal forwards;
+        &-before {
+            transform: scaleY(0);
+        }
+        &-after {
+            transform: scaleY(1);
         }
     }
-    
-    @keyframes swipe-right {
-        0% {
-            clip-path: inset(0 0 0 100%);
-        }
-        100% {
-            clip-path: inset(0);
-        }
-    }
-    
-    @keyframes swipe-top {
-        0% {
-            clip-path: inset(0 0 100% 0);
-        }
-        100% {
-            clip-path: inset(0);
-        }
-    }
-    
-    @keyframes swipe-bottom {
-        0% {
-            clip-path: inset(100% 0 0 0);
-        }
-        100% {
-            clip-path: inset(0);
-        }
-    }
-
-    // slide Animations
-    &SlideInLeft {
-        animation: slide-left 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SlideInRight {
-        animation: slide-right 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SlideInTop {
-        animation: slide-top 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &SlideInBottom {
-        animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &SlideOutLeft {
-        animation: slide-left 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SlideOutRight {
-        animation: slide-right 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &SlideOutTop {
-        animation: slide-top 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    &SlideOutBottom {
-        animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
-    }
-
-    @keyframes slide-left {
-        0% {
-            transform: translateX(-100%);
-            clip-path: inset(0 0 0 100%);
-        }
-        100% {
-            transform: translateX(0);
-            clip-path: inset(0);
-        }
-    }
-    
-    @keyframes slide-right {
-        0% {
-            transform: translateX(100%);
-            clip-path: inset(0 100% 0 0);
-        }
-        100% {
-            transform: translateX(0);
-            clip-path: inset(0);
-        }
-    }
-    
-    @keyframes slide-top {
-        0% {
-            transform: translateY(-100%);
-            clip-path: inset(100% 0 0 0);
-        }
-        100% {
-            transform: translateY(0);
-            clip-path: inset(0);
-        }
-    }
-    
-    @keyframes slide-bottom {
-        0% {
-            transform: translateY(100%);
-            clip-path: inset(0 0 100% 0);
-        }
-        100% {
-            transform: translateY(0);
-            clip-path: inset(0);
-        }
-    }
-
-    // grow animations
-    &Grow {
-        animation: grow 0.5s ease-in-out 1 normal forwards;
-    }
-
-    &Shrink {
-        animation: grow 0.5s ease-in-out 1 reverse forwards;
-    }
-
     @keyframes grow {
         0% {
             transform: scale(0);
@@ -233,5 +66,128 @@
             transform: scale(1);
         }
     }
+    animation: grow 0.5s ease-in-out 1 normal forwards;
+    &-before {
+        transform: scale(0);
+    }
+    &-after {
+        transform: scale(1);
+    }
+}
+.shrink {
+    &-vertical {
+        animation: grow-vertical 0.5s ease-in-out 1 reverse forwards;
+        &-after {
+            transform: scaleX(0);
+        }
+    }
+    &-horizontal {
+        animation: grow-horizontal 0.5s ease-in-out 1 reverse forwards;
+        &-after {
+            transform: scaleY(0);
+        }
+    }
+    animation: grow 0.5s ease-in-out 1 reverse forwards;
+    &-after {
+        transform: scale(0);
+    }
+}
 
+.slide {
+    &-in {
+        &-left {
+            @keyframes slide-left {
+                0% {
+                    clip-path: inset(0 100% 0 0);
+                }
+                100% {
+                    clip-path: inset(0);
+                }
+            }
+            animation: slide-left 0.5s ease-in-out 1 normal forwards;
+            &-before {
+                clip-path: inset(0 100% 0 0);
+            }
+            &-after {
+                clip-path: inset(0);
+            }
+        }
+        &-right {        
+            @keyframes slide-right {
+                0% {
+                    clip-path: inset(0 0 0 100%);
+                }
+                100% {
+                    clip-path: inset(0);
+                }
+            }
+            animation: slide-right 0.5s ease-in-out 1 normal forwards;
+            &-before {
+                clip-path: inset(0 0 0 100%);
+            }
+            &-after {
+                clip-path: inset(0);
+            }
+        }
+        &-bottom {
+            @keyframes slide-bottom {
+                0% {
+                    clip-path: inset(100% 0 0 0);
+                }
+                100% {
+                    clip-path: inset(0);
+                }
+            }
+            animation: slide-bottom 0.5s ease-in-out 1 normal forwards;
+            &-before {
+                clip-path: inset(100% 0 0 0);
+            }
+            &-after {
+                clip-path: inset(0);
+            }
+        }
+        &-top {             
+            @keyframes slide-top {
+                0% {
+                    clip-path: inset(0 0 100% 0);
+                }
+                100% {
+                    clip-path: inset(0);
+                }
+            }
+            animation: slide-top 0.5s ease-in-out 1 normal forwards;
+            &-before {
+                clip-path: inset(0 0 100% 0);
+            }
+            &-after {
+                clip-path: inset(0);
+            }
+        }
+    }
+    &-out {
+        &-left {
+            animation: slide-left 0.5s ease-in-out 1 reverse forwards;
+            &-after {
+                clip-path: inset(0 100% 0 0);
+            }
+        }
+        &-right {        
+            animation: slide-right 0.5s ease-in-out 1 reverse forwards;
+            &-after {
+                clip-path: inset(0 0 0 100%);
+            }
+        }
+        &-bottom {
+            animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
+            &-after {
+                clip-path: inset(100% 0 0 0);
+            }
+        }
+        &-top {             
+            animation: slide-top 0.5s ease-in-out 1 reverse forwards;
+            &-after {
+                clip-path: inset(0 0 100% 0);
+            }
+        }
+    }
 }

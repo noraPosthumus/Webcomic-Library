@@ -112,8 +112,15 @@
   background-color: #f1cd2c;
 }
 
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 .fade-in {
-  animation-duration: 0.5s;
   animation: fade 0.5s ease-in-out 1 normal forwards;
 }
 .fade-in-before {
@@ -125,42 +132,17 @@
 .fade-out {
   animation: fade 0.5s ease-in-out 1 reverse forwards;
 }
-.fade-out-before {
-  opacity: 1;
-}
 .fade-out-after {
   opacity: 0;
 }
 
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.grow {
+  animation: grow 0.5s ease-in-out 1 normal forwards;
 }
-.playCurtainInY {
-  animation: curtain-horizontal 0.5s ease-in-out 1 alternate forwards;
+.grow-vertical {
+  animation: grow-vertical 0.5s ease-in-out 1 normal forwards;
 }
-.playCurtainInX {
-  animation: curtain-vertical 0.5s ease-in-out 1 alternate forwards;
-}
-.playCurtainOutY {
-  animation: curtain-horizontal 0.5s ease-in-out 1 reverse forwards;
-}
-.playCurtainOutX {
-  animation: curtain-vertical 0.5s ease-in-out 1 reverse forwards;
-}
-@keyframes curtain-horizontal {
-  0% {
-    transform: scaleY(0);
-  }
-  100% {
-    transform: scaleY(1);
-  }
-}
-@keyframes curtain-vertical {
+@keyframes grow-vertical {
   0% {
     transform: scaleX(0);
   }
@@ -168,131 +150,28 @@
     transform: scaleX(1);
   }
 }
-.playSwipeInLeft {
-  animation: swipe-left 0.5s ease-in-out 1 normal forwards;
+.grow-vertical-before {
+  transform: scaleX(0);
 }
-.playSwipeInRight {
-  animation: swipe-right 0.5s ease-in-out 1 normal forwards;
+.grow-vertical-after {
+  transform: scaleX(1);
 }
-.playSwipeInTop {
-  animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
+.grow-horizontal {
+  animation: grow-horizontal 0.5s ease-in-out 1 normal forwards;
 }
-.playSwipeInBottom {
-  animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
-}
-.playSwipeOutLeft {
-  animation: swipe-left 0.5s ease-in-out 1 normal forwards;
-}
-.playSwipeOutRight {
-  animation: swipe-right 0.5s ease-in-out 1 normal forwards;
-}
-.playSwipeOutTop {
-  animation: swipe-top 0.5s ease-in-out 1 reverse forwards;
-}
-.playSwipeOutBottom {
-  animation: swipe-bottom 0.5s ease-in-out 1 reverse forwards;
-}
-@keyframes swipe-left {
+@keyframes grow-horizontal {
   0% {
-    clip-path: inset(0 100% 0 0);
+    transform: scaleY(0);
   }
   100% {
-    clip-path: inset(0);
+    transform: scaleY(1);
   }
 }
-@keyframes swipe-right {
-  0% {
-    clip-path: inset(0 0 0 100%);
-  }
-  100% {
-    clip-path: inset(0);
-  }
+.grow-horizontal-before {
+  transform: scaleY(0);
 }
-@keyframes swipe-top {
-  0% {
-    clip-path: inset(0 0 100% 0);
-  }
-  100% {
-    clip-path: inset(0);
-  }
-}
-@keyframes swipe-bottom {
-  0% {
-    clip-path: inset(100% 0 0 0);
-  }
-  100% {
-    clip-path: inset(0);
-  }
-}
-.playSlideInLeft {
-  animation: slide-left 0.5s ease-in-out 1 normal forwards;
-}
-.playSlideInRight {
-  animation: slide-right 0.5s ease-in-out 1 normal forwards;
-}
-.playSlideInTop {
-  animation: slide-top 0.5s ease-in-out 1 reverse forwards;
-}
-.playSlideInBottom {
-  animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
-}
-.playSlideOutLeft {
-  animation: slide-left 0.5s ease-in-out 1 normal forwards;
-}
-.playSlideOutRight {
-  animation: slide-right 0.5s ease-in-out 1 normal forwards;
-}
-.playSlideOutTop {
-  animation: slide-top 0.5s ease-in-out 1 reverse forwards;
-}
-.playSlideOutBottom {
-  animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
-}
-@keyframes slide-left {
-  0% {
-    transform: translateX(-100%);
-    clip-path: inset(0 0 0 100%);
-  }
-  100% {
-    transform: translateX(0);
-    clip-path: inset(0);
-  }
-}
-@keyframes slide-right {
-  0% {
-    transform: translateX(100%);
-    clip-path: inset(0 100% 0 0);
-  }
-  100% {
-    transform: translateX(0);
-    clip-path: inset(0);
-  }
-}
-@keyframes slide-top {
-  0% {
-    transform: translateY(-100%);
-    clip-path: inset(100% 0 0 0);
-  }
-  100% {
-    transform: translateY(0);
-    clip-path: inset(0);
-  }
-}
-@keyframes slide-bottom {
-  0% {
-    transform: translateY(100%);
-    clip-path: inset(0 0 100% 0);
-  }
-  100% {
-    transform: translateY(0);
-    clip-path: inset(0);
-  }
-}
-.playGrow {
-  animation: grow 0.5s ease-in-out 1 normal forwards;
-}
-.playShrink {
-  animation: grow 0.5s ease-in-out 1 reverse forwards;
+.grow-horizontal-after {
+  transform: scaleY(1);
 }
 @keyframes grow {
   0% {
@@ -301,6 +180,124 @@
   100% {
     transform: scale(1);
   }
+}
+.grow-before {
+  transform: scale(0);
+}
+.grow-after {
+  transform: scale(1);
+}
+
+.shrink {
+  animation: grow 0.5s ease-in-out 1 reverse forwards;
+}
+.shrink-vertical {
+  animation: grow-vertical 0.5s ease-in-out 1 reverse forwards;
+}
+.shrink-vertical-after {
+  transform: scaleX(0);
+}
+.shrink-horizontal {
+  animation: grow-horizontal 0.5s ease-in-out 1 reverse forwards;
+}
+.shrink-horizontal-after {
+  transform: scaleY(0);
+}
+.shrink-after {
+  transform: scale(0);
+}
+
+.slide-in-left {
+  animation: slide-left 0.5s ease-in-out 1 normal forwards;
+}
+@keyframes slide-left {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0);
+  }
+}
+.slide-in-left-before {
+  clip-path: inset(0 100% 0 0);
+}
+.slide-in-left-after {
+  clip-path: inset(0);
+}
+.slide-in-right {
+  animation: slide-right 0.5s ease-in-out 1 normal forwards;
+}
+@keyframes slide-right {
+  0% {
+    clip-path: inset(0 0 0 100%);
+  }
+  100% {
+    clip-path: inset(0);
+  }
+}
+.slide-in-right-before {
+  clip-path: inset(0 0 0 100%);
+}
+.slide-in-right-after {
+  clip-path: inset(0);
+}
+.slide-in-bottom {
+  animation: slide-bottom 0.5s ease-in-out 1 normal forwards;
+}
+@keyframes slide-bottom {
+  0% {
+    clip-path: inset(100% 0 0 0);
+  }
+  100% {
+    clip-path: inset(0);
+  }
+}
+.slide-in-bottom-before {
+  clip-path: inset(100% 0 0 0);
+}
+.slide-in-bottom-after {
+  clip-path: inset(0);
+}
+.slide-in-top {
+  animation: slide-top 0.5s ease-in-out 1 normal forwards;
+}
+@keyframes slide-top {
+  0% {
+    clip-path: inset(0 0 100% 0);
+  }
+  100% {
+    clip-path: inset(0);
+  }
+}
+.slide-in-top-before {
+  clip-path: inset(0 0 100% 0);
+}
+.slide-in-top-after {
+  clip-path: inset(0);
+}
+.slide-out-left {
+  animation: slide-left 0.5s ease-in-out 1 reverse forwards;
+}
+.slide-out-left-after {
+  clip-path: inset(0 100% 0 0);
+}
+.slide-out-right {
+  animation: slide-right 0.5s ease-in-out 1 reverse forwards;
+}
+.slide-out-right-after {
+  clip-path: inset(0 0 0 100%);
+}
+.slide-out-bottom {
+  animation: slide-bottom 0.5s ease-in-out 1 reverse forwards;
+}
+.slide-out-bottom-after {
+  clip-path: inset(100% 0 0 0);
+}
+.slide-out-top {
+  animation: slide-top 0.5s ease-in-out 1 reverse forwards;
+}
+.slide-out-top-after {
+  clip-path: inset(0 0 100% 0);
 }
 
 /*# sourceMappingURL=webcomic.css.map */

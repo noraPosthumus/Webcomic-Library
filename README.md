@@ -25,8 +25,8 @@ npm install webcomic-library
 <script src="node_modules/webcomic-library/dist/webcomic.js"></script>
 ```
 
-### With JS Deliver
-[jsdeliver](https://cdn.jsdelivr.net/)
+### With JS Delivr
+[jsdelivr](https://cdn.jsdelivr.net/)
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/webcomic-library@latest/dist/webcomic.css">
@@ -93,11 +93,27 @@ This layout adjusts automaticly to the number of panels their size and the scree
 ```
 
 ## Animations
-You can add animations to Panels by adding the `data-intro` or `data-outro` attributes.
-
+You can add animations to panels by adding the `data-intro` or `data-outro` attributes.
 ```html
     <div class="panel" data-intro="fade-in" data-outro="fade-out"></div>
 ```
+### List of Animations
+- `grow`
+- `shrink`
+- `grow-horizontal`
+- `shrink-horizontal`
+- `grow-vertical`
+- `shrink-vertical`
+- `fade-in`
+- `fade-out`
+- `slide-in-left`
+- `slide-out-left`
+- `slide-in-right`
+- `slide-out-right`
+- `slide-in-top`
+- `slide-out-top`
+- `slide-in-bottom`
+- `slide-out-bottom`
 
 ## Multiple Pages
 To make a comic with multiple pages you need to create each page as a HTML page. Then on the nextPage event you can redirect to the new page. For Example like this:
