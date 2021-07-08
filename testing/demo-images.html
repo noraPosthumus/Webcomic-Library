@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../dist/webcomic.css">
+    <title>Demo</title>
+</head>
+<body>
+    <div class="webcomic layout-grid" data-webcomic-options='{"playOutro":1, "cycle": false, "panelWidth": "100%", "horizontalGutter": "30px", "border": 10}'>
+        <div class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+            <img src="/testing/img-testing-jpg-445x280.jpg">
+        </div>
+        <div class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+        <div class="panel border-solid" data-intro="fade-in" data-outro="fade-out">
+        </div>
+    </div>
+    <script src="../dist/webcomic.js"></script>
+    <script>
+        webcomic.on("initialized", () => console.log("Webcomic Initialized"));
+    </script>
+</body>
+</html>

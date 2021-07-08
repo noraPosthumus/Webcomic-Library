@@ -49,6 +49,16 @@ var webcomic;
         if (dataOptions) {
             Object.assign(webcomic.options, options, JSON.parse(dataOptions));
         }
+        if (webcomic.options.border)
+            page.style.setProperty("--border", typeof webcomic.options.border == "number" ? webcomic.options.border + "px" : webcomic.options.border);
+        if (webcomic.options.panelWidth)
+            page.style.setProperty("--panel-width", typeof webcomic.options.panelWidth == "number" ? webcomic.options.panelWidth + "px" : webcomic.options.panelWidth);
+        if (webcomic.options.panelHeight)
+            page.style.setProperty("--panel-height", typeof webcomic.options.panelHeight == "number" ? webcomic.options.panelHeight + "px" : webcomic.options.panelHeight);
+        if (webcomic.options.horizontalGutter)
+            page.style.setProperty("--horizontal-gutter", typeof webcomic.options.horizontalGutter == "number" ? webcomic.options.horizontalGutter + "px" : webcomic.options.horizontalGutter);
+        if (webcomic.options.vertivalGutter)
+            page.style.setProperty("--vertical-gutter", typeof webcomic.options.vertivalGutter == "number" ? webcomic.options.vertivalGutter + "px" : webcomic.options.vertivalGutter);
         var children = Array.from(page.children);
         panels = children.filter(function (child) {
             return child.classList.contains("panel");
@@ -82,11 +92,18 @@ var webcomic;
     })(WebcomicEvents = webcomic.WebcomicEvents || (webcomic.WebcomicEvents = {}));
     var events = new Map([]);
     function on(event, callbackFn) {
-        if (events.get(event)) {
-            events.get(event).push(callbackFn);
+        var e;
+        if (typeof event == "string") {
+            e = WebcomicEvents[event];
         }
         else {
-            events.set(event, [callbackFn]);
+            e = event;
+        }
+        if (events.get(e)) {
+            events.get(e).push(callbackFn);
+        }
+        else {
+            events.set(e, [callbackFn]);
         }
     }
     webcomic.on = on;

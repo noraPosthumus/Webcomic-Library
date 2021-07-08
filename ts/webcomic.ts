@@ -2,7 +2,7 @@ namespace webcomic {
 
     // options
     enum PlayOutroOptions {onNextPanel, onPageEnd}
-    interface Options {keyboardEvents?: boolean, cycle?: boolean, playOutro?: PlayOutroOptions};
+    interface Options {keyboardEvents?: boolean, cycle?: boolean, playOutro?: PlayOutroOptions, panelWidth?: number | string, panelHeight?: number | string, horizontalGutter?: number | string, vertivalGutter?: number | string, border?: number | string};
     export let options: Options = {
         keyboardEvents: true,
         cycle: true,
@@ -25,6 +25,17 @@ namespace webcomic {
         if(dataOptions) {
             Object.assign(webcomic.options, options, JSON.parse(dataOptions));
         }
+
+        if (webcomic.options.border)
+            page.style.setProperty("--border", typeof webcomic.options.border == "number" ? webcomic.options.border + "px" : webcomic.options.border);
+        if (webcomic.options.panelWidth)
+            page.style.setProperty("--panel-width", typeof webcomic.options.panelWidth == "number" ? webcomic.options.panelWidth + "px" : webcomic.options.panelWidth);
+        if (webcomic.options.panelHeight)
+            page.style.setProperty("--panel-height", typeof webcomic.options.panelHeight == "number" ? webcomic.options.panelHeight + "px" : webcomic.options.panelHeight);
+        if (webcomic.options.horizontalGutter)
+            page.style.setProperty("--horizontal-gutter", typeof webcomic.options.horizontalGutter == "number" ? webcomic.options.horizontalGutter + "px" : webcomic.options.horizontalGutter);
+        if (webcomic.options.vertivalGutter)
+            page.style.setProperty("--vertical-gutter", typeof webcomic.options.vertivalGutter == "number" ? webcomic.options.vertivalGutter + "px" : webcomic.options.vertivalGutter);
 
         let children = Array.from(page.children) as Array<HTMLElement>;
 
@@ -58,11 +69,17 @@ namespace webcomic {
     }
     let events: Map<WebcomicEvents, CallableFunction[]> = new Map<WebcomicEvents, CallableFunction[]>([
     ])
-    export function on (event: WebcomicEvents, callbackFn: CallableFunction) {
-        if(events.get(event)) {
-            events.get(event).push(callbackFn);
+    export function on (event: WebcomicEvents | string, callbackFn: CallableFunction) {
+        let e: WebcomicEvents;
+        if (typeof event == "string") {
+            e = WebcomicEvents[event];
         } else {
-            events.set(event, [callbackFn])
+            e = event;
+        }
+        if(events.get(e)) {
+            events.get(e).push(callbackFn);
+        } else {
+            events.set(e, [callbackFn])
         }
     }
     export function emit (event: WebcomicEvents, ...args) {

@@ -18,7 +18,6 @@
     <script>
         webcomic.on(webcomic.WebcomicEvents.initialized, () => console.log("Webcomic Initialized"));
         
-        // this is just for testing. You shouldn't do this on actuall applications. Let the backend handle it instead.
         webcomic.on(webcomic.WebcomicEvents.nextPage, () => window.open(window.location.pathname + "/../demo-p2.html", "_self"));
     </script>
 </body>

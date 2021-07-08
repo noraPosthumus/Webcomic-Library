@@ -1,13 +1,21 @@
+.webcomic {
+    --horizontal-gutter: 10px;
+    --vertical-gutter: 15px;
+    --panel-width: fit-content;
+    --panel-height: fit-content;
+    --border: 3px;
+}
+
 .webcomic.layout {
     &-grid {
-        --cols: #{$columns};
-        --rows: #{$rows};
+        --cols: 3;
+        --rows: 2;
         display: grid;
         place-items: center;
-        grid-template-columns: repeat(var(--cols), 1fr);
-        grid-template-rows:  repeat(var(--rows), 1fr);
-        column-gap: $vertical-gutter;
-        row-gap: $horizontal-gutter;
+        grid-template-columns: repeat(var(--cols), min-content);
+        grid-template-rows:  repeat(var(--rows), min-content);
+        column-gap: var(--vertical-gutter);
+        row-gap: var(--horizontal-gutter);
         margin: 0;
         
         @for $i from 1 through 5 {
@@ -38,7 +46,7 @@
 
         & > * {
             flex-grow: 1;
-            margin: ($horizontal-gutter / 2) ($vertical-gutter / 2);
+            margin: calc(var(--horizontal-gutter) / 2) calc(var(--vertical-gutter) / 2);
         }
     }
 }
